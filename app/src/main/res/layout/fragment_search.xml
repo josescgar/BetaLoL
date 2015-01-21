@@ -10,25 +10,42 @@
         android:visibility="gone"
         android:gravity="center"
         android:layout_gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <EditText android:id="@+id/search_term"
-            android:hint="@string/hint_summoner_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
 
-        <Spinner android:id="@+id/search_region"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/regions"/>
+            <EditText android:id="@+id/search_term"
+                android:hint="@string/hint_summoner_name"
+                android:layout_width="0dp"
+                android:singleLine="true"
+                android:layout_height="wrap_content"
+                android:layout_weight=".50" />
 
-        <Button android:id="@+id/search_button"
-            android:text="@string/search_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <Spinner android:id="@+id/search_region"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".20"
+                android:entries="@array/regions"/>
 
+            <Button android:id="@+id/search_button"
+                android:text="@string/search_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".30" />
+
+            </LinearLayout>
+
+            <TextView android:text="@string/search_instructions"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     <TextView android:id="@+id/summoners_search_header"
@@ -40,16 +57,10 @@
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
         android:text="@string/summoners_search_noresults" />
 
-    <ScrollView android:id="@+id/scrollView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/summoners_list"
-            android:layout_gravity="center_horizontal" />
-
-   </ScrollView>
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/summoners_list"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

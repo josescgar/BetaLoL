@@ -1,11 +1,13 @@
 package com.escobeitor.betalol;
 
-import android.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 
-import com.escobeitor.betalol.com.escobeitor.betalol.model.Summoner;
+
+import com.escobeitor.betalol.config.Utils;
+import com.escobeitor.betalol.model.Summoner;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.InstanceState;
 
@@ -20,6 +22,9 @@ public class SearchActivity extends ActionBarActivity implements SearchFragment.
      */
     @InstanceState
     boolean fragmentLoaded = false;
+
+    @Bean
+    Utils utils;
 
     /**
      * Initialize the activity loading the search fragment
@@ -39,6 +44,6 @@ public class SearchActivity extends ActionBarActivity implements SearchFragment.
 
     @Override
     public void onSummonerSelected(Summoner summoner) {
-        //TODO
+        utils.showToast(summoner.getName());
     }
 }

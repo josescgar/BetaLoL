@@ -1,4 +1,4 @@
-package com.escobeitor.betalol.com.escobeitor.betalol.model;
+package com.escobeitor.betalol.model;
 
 import java.util.Date;
 

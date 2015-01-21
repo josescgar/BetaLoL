@@ -5,6 +5,11 @@
     <string name="summoners_search_noresults">No summoners found</string>
     <string name="action_search_title">Search summoner</string>
     <string name="action_region_title">Select region</string>
-    <string name="hint_summoner_name">Summoner name...</string>
+    <string name="hint_summoner_name">Summoner names...</string>
+    <string name="search_instructions">Type in summoner names separated by commas and select a region</string>
     <string name="search_button">Search</string>
+
+    <string name="error_no_names">You must enter a list of names separated by commas</string>
+    <string name="summoner_item_level">Level %1$s</string>
+    <string name="summoner_item_last_activity">Last activity: %1$s</string>
 </resources>
