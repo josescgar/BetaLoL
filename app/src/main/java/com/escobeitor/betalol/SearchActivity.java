@@ -1,66 +1,44 @@
 package com.escobeitor.betalol;
 
+import android.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 
+import com.escobeitor.betalol.com.escobeitor.betalol.model.Summoner;
 
-public class SearchActivity extends ActionBarActivity {
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.InstanceState;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+/**
+ * Main activity class
+ */
+@EActivity(R.layout.activity_search)
+public class SearchActivity extends ActionBarActivity implements SearchFragment.OnSummonerSelectedListener {
 
     /**
-     * A placeholder fragment containing a simple view.
+     * Search fragment
      */
-    public static class PlaceholderFragment extends Fragment {
+    @InstanceState
+    boolean fragmentLoaded = false;
 
-        public PlaceholderFragment() {
-        }
+    /**
+     * Initialize the activity loading the search fragment
+     */
+    @AfterViews
+    public void initialize() {
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-            return rootView;
+        if(!fragmentLoaded) {
+            SearchFragment searchFragment = SearchFragment_.builder().build();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, searchFragment)
+                    .commit();
+
+            fragmentLoaded = true;
         }
+    }
+
+    @Override
+    public void onSummonerSelected(Summoner summoner) {
+        //TODO
     }
 }
