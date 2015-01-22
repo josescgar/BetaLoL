@@ -1,12 +1,16 @@
 package com.escobeitor.betalol.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Represents a LoL summoner
  * Created by escobeitor on 1/20/15.
  */
-public class Summoner {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Summoner implements Serializable {
 
     /**
      * Summoner unique ID

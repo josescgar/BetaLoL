@@ -5,9 +5,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.escobeitor.betalol.model.Summoner;
+import com.escobeitor.betalol.model.Game;
 
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.RootContext;
 
 import java.io.Serializable;
@@ -15,43 +16,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom adapter for the summoner list
+ * List adapter for recent games
  * Created by escobeitor on 1/21/15.
  */
 @EBean
-public class SummonerListAdapter extends BaseAdapter implements Serializable {
+public class GameListAdapter extends BaseAdapter implements Serializable {
 
-    List<Summoner> summoners = new ArrayList<Summoner>();
+    public List<Game> games = new ArrayList<Game>();
 
     @RootContext
     Context context;
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        SummonerItemView summonerItemView;
+        GameItemView gameItemView;
         if(convertView == null) {
-            summonerItemView = SummonerItemView_.build(context);
+            gameItemView = GameItemView_.build(context);
         } else {
-            summonerItemView = (SummonerItemView) convertView;
+            gameItemView = (GameItemView) convertView;
         }
 
-        summonerItemView.bind(getItem(position));
-
-        return summonerItemView;
+        gameItemView.bind(getItem(position));
+        return gameItemView;
     }
 
     @Override
     public int getCount() {
-        return summoners.size();
+        return games.size();
     }
 
     @Override
-    public Summoner getItem(int position) {
-        return summoners.get(position);
+    public Game getItem(int position) {
+        return games.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return summoners.get(position).getId();
+        return games.get(position).getGameId();
     }
 }

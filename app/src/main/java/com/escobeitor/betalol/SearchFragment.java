@@ -4,19 +4,17 @@ package com.escobeitor.betalol;
 import android.app.ProgressDialog;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.escobeitor.betalol.config.Utils;
 import com.escobeitor.betalol.model.Summoner;
 import com.escobeitor.betalol.rest.LoLAPIErrorHandler;
-import com.escobeitor.betalol.rest.LoLRESTClient;
+import com.escobeitor.betalol.rest.LoLSummonerClient;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -34,7 +32,6 @@ import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.annotations.rest.RestService;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,8 +60,11 @@ public class SearchFragment extends Fragment {
     @StringRes(R.string.error_no_names)
     String errorNoNames;
 
+    @InstanceState
+    String searchTermText;
+
     @RestService
-    LoLRESTClient lolRestClient;
+    LoLSummonerClient lolSummonerClient;
 
     @Bean
     Utils utils;
@@ -73,7 +73,6 @@ public class SearchFragment extends Fragment {
     LoLAPIErrorHandler apiErrorHandler;
 
     @Bean
-    @InstanceState
     SummonerListAdapter adapter;
 
     private ProgressDialog dialog;
@@ -88,6 +87,14 @@ public class SearchFragment extends Fragment {
      */
     @AfterViews
     public void initialize() {
+
+        //Restored from the back stack or the background
+        if(adapter.summoners != null && !adapter.summoners.isEmpty()) {
+            searchHeader.setVisibility(View.GONE);
+            searchTerm.setText(searchTermText);
+            searchContainer.setVisibility(View.VISIBLE);
+        }
+
         this.summonerListener = (OnSummonerSelectedListener) getActivity();
         dialog = new ProgressDialog(getActivity());
         summonersList.setAdapter(adapter);
@@ -95,7 +102,7 @@ public class SearchFragment extends Fragment {
 
     @AfterInject
     public void setErrorHandler() {
-        lolRestClient.setRestErrorHandler(apiErrorHandler);
+        lolSummonerClient.setRestErrorHandler(apiErrorHandler);
     }
 
     /**
@@ -118,15 +125,15 @@ public class SearchFragment extends Fragment {
     public void doSearchSummoners() {
 
         final String region = searchRegion.getSelectedItem().toString().toLowerCase();
-        final String names = searchTerm.getText().toString();
-        if(TextUtils.isEmpty(names)) {
+        searchTermText = searchTerm.getText().toString();
+        if(TextUtils.isEmpty(searchTermText)) {
             utils.showToast(errorNoNames);
             return;
         }
 
         showProgressDialog(true);
 
-        Map<String, Summoner> result = lolRestClient.searchSummonersByName(names, region);
+        Map<String, Summoner> result = lolSummonerClient.searchSummonersByName(searchTermText, region);
         updateViewWithResults(result);
 
         showProgressDialog(false);
@@ -147,14 +154,15 @@ public class SearchFragment extends Fragment {
         }
 
         searchHeader.setVisibility(View.GONE);
-
         adapter.summoners = new ArrayList<>(summoners.values());
         adapter.notifyDataSetChanged();
     }
 
     @ItemClick(R.id.summoners_list)
     public void summonerClicked(Summoner summoner) {
-        summonerListener.onSummonerSelected(summoner);
+        summonerListener.onSummonerSelected(
+                summoner,
+                searchRegion.getSelectedItem().toString().toLowerCase());
     }
 
     @UiThread
@@ -172,6 +180,6 @@ public class SearchFragment extends Fragment {
      */
     public interface OnSummonerSelectedListener {
 
-        public void onSummonerSelected(Summoner summoner);
+        public void onSummonerSelected(Summoner summoner, String region);
     }
 }

@@ -23,9 +23,6 @@ public class SearchActivity extends ActionBarActivity implements SearchFragment.
     @InstanceState
     boolean fragmentLoaded = false;
 
-    @Bean
-    Utils utils;
-
     /**
      * Initialize the activity loading the search fragment
      */
@@ -43,7 +40,16 @@ public class SearchActivity extends ActionBarActivity implements SearchFragment.
     }
 
     @Override
-    public void onSummonerSelected(Summoner summoner) {
-        utils.showToast(summoner.getName());
+    public void onSummonerSelected(Summoner summoner, String region) {
+
+        GamesFragment fragment = GamesFragment_.builder()
+                .region(region)
+                .summoner(summoner)
+                .build();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(summoner.getName())
+                .commit();
     }
 }
