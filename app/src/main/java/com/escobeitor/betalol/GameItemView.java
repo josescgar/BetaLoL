@@ -130,8 +130,8 @@ public class GameItemView extends LinearLayout {
                 champ = lolStaticClient.getChampion(game.getChampionId());
 
                 //Store in local database for future reference
-                if(champ != null) {
-                    championDao.createIfNotExists(champ);
+                if(champ != null && championDao.isTableExists()) {
+                    championDao.createOrUpdate(champ);
                 }
 
             } catch (Exception e) {
