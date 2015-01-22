@@ -5,14 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.escobeitor.betalol.config.Utils;
 import com.escobeitor.betalol.model.Game;
 import com.escobeitor.betalol.model.ListGame;
 import com.escobeitor.betalol.model.Summoner;
 import com.escobeitor.betalol.rest.LoLAPIErrorHandler;
 import com.escobeitor.betalol.rest.LoLSummonerClient;
-
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -23,9 +20,6 @@ import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.rest.RestService;
-
-import java.util.ArrayList;
-
 
 /**
  * Recent summoner games fragment
@@ -50,6 +44,9 @@ public class GamesFragment extends Fragment {
 
     @ViewById(R.id.games_no_results)
     TextView noResults;
+
+    @ViewById(R.id.games_awesomeness)
+    TextView awesomenessText;
 
     @RestService
     LoLSummonerClient summonerClient;
@@ -84,14 +81,26 @@ public class GamesFragment extends Fragment {
         showProgressDialog(true);
 
         ListGame games = summonerClient.getRecentGamesForSummoner(summoner.getId(), region);
-        updateGamesList(games);
+
+        int totalKills = 0;
+        int totalAssists = 0;
+        if(games != null) {
+            for (Game game : games.getGames()) {
+                totalKills += game.getStats().getChampionsKilled();
+                totalAssists += game.getStats().getAssists();
+            }
+        }
+
+        final int awesomeness = totalKills + (int) Math.floor(totalAssists / 2);
+
+        updateGamesList(games, awesomeness);
 
         showProgressDialog(false);
 
     }
 
     @UiThread
-    public void updateGamesList(ListGame games) {
+    public void updateGamesList(ListGame games, int awesomeness) {
 
         if(games == null || games.getGames() == null || games.getGames().isEmpty()) {
             noResults.setVisibility(View.VISIBLE);
@@ -102,6 +111,8 @@ public class GamesFragment extends Fragment {
         adapter.games = games.getGames();
         adapter.notifyDataSetChanged();
 
+        awesomenessText.setText(getString(R.string.games_awesomeness, awesomeness));
+        awesomenessText.setVisibility(View.VISIBLE);
     }
 
     @UiThread

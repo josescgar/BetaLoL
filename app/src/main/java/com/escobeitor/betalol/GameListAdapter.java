@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import com.escobeitor.betalol.model.Game;
 
 import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.RootContext;
 
 import java.io.Serializable;

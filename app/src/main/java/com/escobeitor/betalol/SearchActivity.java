@@ -3,11 +3,9 @@ package com.escobeitor.betalol;
 import android.support.v7.app.ActionBarActivity;
 
 
-import com.escobeitor.betalol.config.Utils;
 import com.escobeitor.betalol.model.Summoner;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.InstanceState;
 

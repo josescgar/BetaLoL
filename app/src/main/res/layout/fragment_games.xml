@@ -14,6 +14,15 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:id="@+id/games_header" />
 
+    <TextView android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:id="@+id/games_awesomeness" />
+
     <TextView android:text="@string/no_games_found"
         android:visibility="gone"
         android:layout_width="fill_parent"

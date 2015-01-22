@@ -13,6 +13,7 @@
     <string name="summoner_item_last_activity">Last activity: %1$s</string>
 
     <string name="games_header">Recent games for %1$s</string>
+    <string name="games_awesomeness">Awesomeness level: %1$d</string>
     <string name="no_games_found">There are no recent games for this summoner</string>
 
     <string name="item_game_won">Won</string>
