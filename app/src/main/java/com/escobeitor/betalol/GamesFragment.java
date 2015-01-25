@@ -106,7 +106,9 @@ public class GamesFragment extends Fragment {
             noResults.setVisibility(View.VISIBLE);
             adapter.games.clear();
             adapter.notifyDataSetChanged();
+            return;
         }
+
 
         adapter.games = games.getGames();
         adapter.notifyDataSetChanged();
