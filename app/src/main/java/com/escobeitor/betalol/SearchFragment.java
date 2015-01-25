@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.escobeitor.betalol.config.Utils;
+import com.escobeitor.betalol.model.League;
 import com.escobeitor.betalol.model.Summoner;
 import com.escobeitor.betalol.rest.LoLAPIErrorHandler;
 import com.escobeitor.betalol.rest.LoLSummonerClient;
@@ -32,7 +33,9 @@ import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.annotations.rest.RestService;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Summoner search results fragment
@@ -137,6 +140,49 @@ public class SearchFragment extends Fragment {
         updateViewWithResults(result);
 
         showProgressDialog(false);
+
+        getLeagueInformation(result, region);
+
+    }
+
+    /**
+     * Search league information for the given summoners
+     */
+    @Background
+    public void getLeagueInformation(Map<String, Summoner> result, String region) {
+
+        if(result == null || result.isEmpty()) {
+            return;
+        }
+
+        StringBuffer ids = new StringBuffer();
+        for(Summoner summoner : result.values()) {
+            ids.append(summoner.getId()).append(",");
+        }
+        ids.deleteCharAt(ids.length() - 1);
+
+        Map<String, List<League>> leagues = lolSummonerClient.getLeaguesForSummoners(ids.toString(), region);
+        if(leagues == null || leagues.values().isEmpty()) {
+            return;
+        }
+
+        //Update views
+        for(Entry<String, List<League>> entry : leagues.entrySet()) {
+            OnLeagueInfoListener listener = adapter.leagueListeners.get(entry.getKey());
+            if(listener == null) {
+                continue;
+            }
+
+            listener.onLeagueInformationAvailable(entry.getValue());
+        }
+
+        //Update summoner model
+        for(Summoner summoner : adapter.summoners) {
+            List<League> summonerLeagues = leagues.get(Long.toString(summoner.getId()));
+            if(summonerLeagues != null) {
+                summoner.setLeague(summonerLeagues);
+            }
+        }
     }
 
     /**
@@ -149,6 +195,7 @@ public class SearchFragment extends Fragment {
         if(summoners == null || summoners.isEmpty()) {
             searchHeader.setVisibility(View.VISIBLE);
             adapter.summoners.clear();
+            adapter.leagueListeners.clear();
             adapter.notifyDataSetInvalidated();
             return;
         }
@@ -156,6 +203,10 @@ public class SearchFragment extends Fragment {
         searchHeader.setVisibility(View.GONE);
         adapter.summoners = new ArrayList<>(summoners.values());
         adapter.notifyDataSetChanged();
+    }
+
+    public void updateViewWithLeagues(Map<String, List<League>> leagues) {
+
     }
 
     @ItemClick(R.id.summoners_list)

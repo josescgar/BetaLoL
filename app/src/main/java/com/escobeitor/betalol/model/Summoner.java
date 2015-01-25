@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Represents a LoL summoner
@@ -36,6 +37,11 @@ public class Summoner implements Serializable {
      * Summoner level
      */
     private int summonerLevel;
+
+    /**
+     * Summoner league entry
+     */
+    private List<League> league;
 
     public int getSummonerLevel() {
         return summonerLevel;
@@ -75,5 +81,13 @@ public class Summoner implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public List<League> getLeague() {
+        return league;
+    }
+
+    public void setLeague(List<League> league) {
+        this.league = league;
     }
 }

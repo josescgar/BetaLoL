@@ -26,4 +26,6 @@
 
     <string name="error_no_champion">Could not fetch champion from API</string>
     <string name="champion_loading">Loading champion…</string>
+
+    <string name="league_info">No league information</string>
 </resources>

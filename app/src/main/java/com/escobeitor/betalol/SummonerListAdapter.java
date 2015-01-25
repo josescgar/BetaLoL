@@ -4,12 +4,15 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
 import com.escobeitor.betalol.model.Summoner;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Custom adapter for the summoner list
@@ -19,6 +22,9 @@ import java.util.List;
 public class SummonerListAdapter extends BaseAdapter implements Serializable {
 
     List<Summoner> summoners = new ArrayList<Summoner>();
+
+    Map<String, OnLeagueInfoListener> leagueListeners =
+            new HashMap<String, OnLeagueInfoListener>();
 
     @RootContext
     Context context;
@@ -33,6 +39,7 @@ public class SummonerListAdapter extends BaseAdapter implements Serializable {
         }
 
         summonerItemView.bind(getItem(position));
+        leagueListeners.put(Long.toString(getItem(position).getId()), summonerItemView);
 
         return summonerItemView;
     }

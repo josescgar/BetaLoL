@@ -14,6 +14,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
+    <TextView android:id="@+id/extra_summoner_leagues"
+        android:text="@string/league_info"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
     <TextView android:id="@+id/extra_summoner_item_last_activity"
         android:textStyle="bold"
         android:paddingBottom="5dp"

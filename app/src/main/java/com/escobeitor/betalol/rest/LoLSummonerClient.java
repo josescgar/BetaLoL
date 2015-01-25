@@ -2,6 +2,7 @@ package com.escobeitor.betalol.rest;
 
 
 import com.escobeitor.betalol.config.Utils;
+import com.escobeitor.betalol.model.League;
 import com.escobeitor.betalol.model.ListGame;
 import com.escobeitor.betalol.model.Summoner;
 
@@ -12,6 +13,7 @@ import org.androidannotations.api.rest.MediaType;
 import org.androidannotations.api.rest.RestClientErrorHandling;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,5 +44,14 @@ public interface LoLSummonerClient extends RestClientErrorHandling {
     @Accept(MediaType.APPLICATION_JSON)
     public ListGame getRecentGamesForSummoner(long summonerId, String region);
 
-
+    /**
+     * Returns a list of league information for all leagues where the given
+     * summoners are participating
+     * @param summonerIds Summoner IDs separated by commas
+     * @param region LoL server region
+     * @return
+     */
+    @Get("/{region}/v2.5/league/by-summoner/{summonerIds}/entry?api_key=" + Utils.LOL_API_KEY)
+    @Accept(MediaType.APPLICATION_JSON)
+    public Map<String, List<League>> getLeaguesForSummoners(String summonerIds, String region);
 }
