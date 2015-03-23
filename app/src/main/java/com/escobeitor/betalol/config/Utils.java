@@ -16,7 +16,7 @@ import org.androidannotations.annotations.UiThread;
 @EBean(scope = Scope.Singleton)
 public class Utils {
 
-    public static final String LOL_API_KEY = "XXX";
+    public static final String LOL_API_KEY = "859bdb07-5935-4150-a0b3-836cea49712c";
 
     public static final String LOG_TAG = "BETALOL";
 
